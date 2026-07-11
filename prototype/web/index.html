@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>万古守灯人 · Legend of the Elder Cultivator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 标题区 -->
+    <header class="header">
+      <h1>万古守灯人</h1>
+      <p class="subtitle">急什么，灯还亮着呢。</p>
+    </header>
+
+    <!-- 主界面 -->
+    <main class="main-layout">
+      <!-- 左：角色状态 -->
+      <section class="panel status-panel">
+        <h2>顾迟年</h2>
+        <div class="avatar">
+          <div class="lamp-icon" id="lampIcon">🪔</div>
+          <div class="lamp-glow" id="lampGlow"></div>
+        </div>
+        <div class="stats">
+          <div class="stat-row">
+            <span>年龄</span>
+            <span id="age">60</span> 岁
+          </div>
+          <div class="stat-row">
+            <span>灯道阶位</span>
+            <span id="realm" class="realm-badge">凡人</span>
+          </div>
+          <div class="stat-row">
+            <span>修为</span>
+            <div class="progress-bar">
+              <div class="progress-fill" id="cultivationBar"></div>
+            </div>
+            <span id="cultivationText">0 / 100</span>
+          </div>
+          <div class="stat-row">
+            <span>灯油</span>
+            <span id="lampOil" class="highlight">0</span> 滴
+          </div>
+          <div class="stat-row">
+            <span>人间烟火</span>
+            <span id="humanWarmth">0</span> 点
+          </div>
+          <div class="stat-row">
+            <span>记忆碎片</span>
+            <span id="memories">10</span> 片
+          </div>
+        </div>
+      </section>
+
+      <!-- 中：主玩法 -->
+      <section class="panel game-panel">
+        <div class="location" id="location">
+          <h3 id="locationName">青萝镇 · 顾宅</h3>
+          <p id="locationDesc">承平三十七年秋，花甲书吏顾迟年，在阁楼发现一盏青铜古灯……</p>
+        </div>
+
+        <div class="actions" id="actions">
+          <!-- 动态生成按钮 -->
+        </div>
+
+        <div class="cultivate-area">
+          <button class="btn btn-primary btn-large" id="cultivateBtn">
+            🪔 守灯修炼
+          </button>
+          <button class="btn btn-secondary" id="convertBtn">
+            烟火 → 灯油 (10点换1滴)
+          </button>
+        </div>
+      </section>
+
+      <!-- 右：剧情日志 -->
+      <section class="panel log-panel">
+        <h2>守灯志</h2>
+        <div class="log-content" id="logContent">
+          <p class="log-entry">【开篇】顾迟年六十大寿，阁楼无字书册自燃，浮现《守灯经》……</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- 事件弹窗 -->
+    <div class="modal hidden" id="eventModal">
+      <div class="modal-content">
+        <h3 id="eventTitle">剧情事件</h3>
+        <p id="eventText"></p>
+        <div class="event-choices" id="eventChoices"></div>
+      </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="home">🏠 青萝镇</button>
+      <button class="nav-btn" data-tab="sect">⛰️ 云岚宗</button>
+      <button class="nav-btn" data-tab="market">🏮 幽灯集</button>
+      <button class="nav-btn" data-tab="ridge">💀 枯骨岭</button>
+    </nav>
+
+    <footer class="footer">
+      <span>《万古守灯人》原创版权 · Legend of the Elder Cultivator</span>
+      <button class="btn btn-small" id="saveBtn">存档</button>
+      <button class="btn btn-small" id="resetBtn">重开</button>
+    </footer>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>

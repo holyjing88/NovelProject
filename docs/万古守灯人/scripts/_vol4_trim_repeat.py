@@ -1,0 +1,114 @@
+# -*- coding: utf-8 -*-
+"""Remove repetitive summary-style paragraphs from chapters 141-165."""
+import re
+from pathlib import Path
+
+VOL4 = Path(__file__).parent / "../chapters/vol04-玄京封灯.md"
+
+# Phrases indicating low-value repeated summary lines
+REPEAT_MARKERS = [
+    "迟暮之约，还没到期",
+    "迟暮之约还没到期",
+    "库内百盏冤灯齐亮",
+    "封灯封的不是妖，是怕",
+    "云岚两列对峙",
+    "下一息，弩箭将破空",
+    "五灯队散作数路",
+    "第一步，已踏出青萝",
+    "急什么，灯还亮着呢",
+]
+
+
+def split_paras(text):
+    paras, buf = [], []
+    for line in text.split("\n"):
+        if line.strip() == "":
+            if buf:
+                paras.append("\n".join(buf))
+                buf = []
+        else:
+            buf.append(line)
+    if buf:
+        paras.append("\n".join(buf))
+    return paras
+
+
+def norm(s):
+    return re.sub(r"\s", "", s)
+
+
+def is_summary_repeat(p: str, seen_markers: dict) -> bool:
+    n = norm(p)
+    if len(n) > 350:
+        return False  # keep long unique scenes
+    hits = sum(1 for m in REPEAT_MARKERS if m in p)
+    if hits == 0:
+        return False
+    key = hits
+    seen_markers[key] = seen_markers.get(key, 0) + 1
+    # Keep first occurrence of short summary-ish paragraphs, drop subsequent
+    if len(n) < 220 and hits >= 2:
+        return seen_markers[key] > 1
+    if len(n) < 180 and hits >= 1:
+        return seen_markers[key] > 2
+    return False
+
+
+def main():
+    text = VOL4.read_text(encoding="utf-8")
+    start = text.index("### 第一百四十一章")
+    end = text.index("### 第一百六十六章")
+    section = text[start:end]
+    parts = re.split(r"(### 第[一百二三四五六七八九十百零]+章[^\n]+)", section)
+
+    num_map = {
+        "一百四十一": 141, "一百四十二": 142, "一百四十三": 143, "一百四十四": 144,
+        "一百四十五": 145, "一百四十六": 146, "一百四十七": 147, "一百四十八": 148,
+        "一百四十九": 149, "一百五十": 150, "一百五十一": 151, "一百五十二": 152,
+        "一百五十三": 153, "一百五十四": 154, "一百五十五": 155, "一百五十六": 156,
+        "一百五十七": 157, "一百五十八": 158, "一百五十九": 159, "一百六十": 160,
+        "一百六十一": 161, "一百六十二": 162, "一百六十三": 163, "一百六十四": 164,
+        "一百六十五": 165,
+    }
+
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "rb", Path(__file__).parent / "_vol4_rebuild_141_165.py"
+    )
+    rb = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rb)
+    FALLBACK = rb.EXP
+
+    rebuilt, counts = [], {}
+    for i in range(1, len(parts), 2):
+        header = parts[i]
+        body = parts[i + 1] if i + 1 < len(parts) else ""
+        m = re.search(r"第([一百二三四五六七八九十百零]+)章", header)
+        if not m or m.group(1) not in num_map:
+            continue
+        n = num_map[m.group(1)]
+        body = body.split("\n---")[0].strip()
+        seen = {}
+        kept = []
+        for p in split_paras(body):
+            if not p.strip():
+                continue
+            if is_summary_repeat(p, seen):
+                continue
+            kept.append(p)
+        body = "\n\n".join(kept)
+        c = len(norm(body))
+        if c < 2500 and n in FALLBACK:
+            body = body.rstrip() + FALLBACK[n]
+            c = len(norm(body))
+        counts[n] = c
+        rebuilt.extend([header, "", body, "", "---", ""])
+
+    VOL4.write_text(text[:start] + "\n".join(rebuilt) + text[end:], encoding="utf-8")
+    for n in sorted(counts):
+        c = counts[n]
+        print(f"Ch {n}: {c} [{'OK' if 2500 <= c <= 4000 else 'OUT'}]")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,21 @@
+{
+  "__version__": "1.0.1",
+  "general": {
+    "start_scene": "c1e2f3a4-b5c6-7890-def1-234567890abc"
+  },
+  "simulator_setting_type": "project",
+  "simulator_device_orientation": "portrait",
+  "simulator_resolution": 0,
+  "customize_resolution": {
+    "width": 720,
+    "height": 1280
+  },
+  "preview": {
+    "simulator_orientation": "portrait",
+    "simulator_resolution": 0,
+    "rotate": false,
+    "current": {
+      "platform": "simulator"
+    }
+  }
+}

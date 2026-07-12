@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v39 终修：修复章末结构 · P1 thicken · 补强 · PAD 清除 · 2000 字闸"""
+"""v39 终修：修复章末结构 · P1 thicken · 补强 · PAD 清除 · 1500 字闸"""
 from __future__ import annotations
 
 import glob
@@ -8,11 +8,10 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import body_chars, extract_body_and_footer, hz
+from prose_utils import TARGET_LO, body_chars, extract_body_and_footer, hz
 from retention_data import RETENTION_END
 
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
-TARGET = 2000
 END_M = "<!-- v38-end -->"
 
 THICKEN_SHORT = {
@@ -108,8 +107,8 @@ def rebuild(n: int, text: str) -> str:
 
     out = body + th + tu + f"\n\n{END_M}\n\n{end}\n\n{st}\n\n\n---\n\n章末。\n\n{note}\n"
     out_body = extract_body_and_footer(out)[0]
-    if hz(out_body) < TARGET:
-        gap = TARGET - hz(out_body)
+    if hz(out_body) < TARGET_LO:
+        gap = TARGET_LO - hz(out_body)
         extra = "他低声道：「手稳，恩不断；恩不断，汤就不凉。汤在叶铺，在刘婆灶，在心里。」"
         if extra not in out:
             out = out.replace(f"\n\n{END_M}", f"\n\n{extra}\n\n{END_M}", 1)
@@ -126,7 +125,7 @@ def main() -> None:
         new = rebuild(n, text)
         open(path, "w", encoding="utf-8", newline="\n").write(new)
         c = body_chars(new)
-        if c < TARGET:
+        if c < TARGET_LO:
             short.append((n, c))
         print(f"ch{n:03d} {c} pad={new.count('坛沿一线温')} meta={'读者' in new}")
     print("short:", short)

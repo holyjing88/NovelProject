@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v38 短章补段（戏内 · 按章沙盘 · 去重后补 2000 字闸）"""
+"""v38 短章补段（戏内 · 按章沙盘 · 去重后补 1500 字闸）"""
 from __future__ import annotations
 
 TOPUP: dict[int, str] = {

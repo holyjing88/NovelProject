@@ -2,7 +2,7 @@
 """ch001-049 弃书风险量化"""
 import glob, re, json, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import extract_body_and_footer, hz
+from prose_utils import TARGET_LO, extract_body_and_footer, hz
 
 PAYOFF = {3, 6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 30, 32, 34, 35, 36, 39, 40, 41, 42, 43, 44, 45, 49}
 HOOK_KEY = ("明日", "锤", "帖", "条", "日", "规矩", "公审", "必还", "四日", "五日", "七日", "坡下", "验", "辨香", "瓮")
@@ -66,7 +66,7 @@ for c in chapters:
     base += max(0, c["dist_pay"] - 3) * 0.9  # 距爽点远
     base -= 2.5 if c["payoff"] else 0
     base -= min(c["hook_score"], 4) * 0.6
-    base -= 0.4 if c["hz"] >= 2000 else 0
+    base -= 0.4 if c["hz"] >= TARGET_LO else 0
     base -= 0.3 if c["hook_len"] >= 45 and c["hook_score"] >= 2 else 0
     daily = min(10, max(1, round(base, 1)))
     # 养书：重复跨章叠加、thicken连读更痛

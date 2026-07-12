@@ -8,11 +8,10 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import body_chars, extract_body_and_footer, hz
+from prose_utils import TARGET_HI, TARGET_LO, body_chars, extract_body_and_footer, hz
 from retention_data import REPLACE_PAIRS, RETENTION_END, THICKEN
 
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
-TARGET_LO, TARGET_HI = 2000, 3000
 MARKER = "<!-- v38-thicken -->"
 END_MARKER = "<!-- v38-end -->"
 

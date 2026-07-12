@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import glob, re, sys, os, json
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import body_chars, extract_body_and_footer
+from prose_utils import TARGET_LO, body_chars, extract_body_and_footer
 
 def dup_ratio(t):
     sents = [s.strip() for s in re.split(r"(?<=[。！？])", t) if len(s.strip()) >= 8]
@@ -30,7 +30,7 @@ for p in sorted(glob.glob(os.path.join("..", "prose", "ch*.md"))):
     if nn > 49:
         continue
     c = body_chars(open(p, encoding="utf-8").read())
-    if c < 2000:
+    if c < TARGET_LO:
         short.append((nn, c))
 print("short:", short)
 

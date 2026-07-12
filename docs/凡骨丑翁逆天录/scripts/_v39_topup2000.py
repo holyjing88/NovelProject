@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v39 字数闸终补：短章独段补至 ≥2000（戏内 · 不 PAD）"""
+"""v39 字数闸终补：短章独段补至 ≥1500（戏内 · 不 PAD）"""
 from __future__ import annotations
 
 import glob
@@ -8,10 +8,9 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import body_chars, extract_body_and_footer, hz
+from prose_utils import TARGET_LO, body_chars, extract_body_and_footer, hz
 
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
-TARGET = 2000
 END_M = "<!-- v38-end -->"
 TOPUP_M = "<!-- v38-topup -->"
 
@@ -121,21 +120,21 @@ def main() -> None:
         body, footer = extract_body_and_footer(text)
         changed = False
         for src in (TAIL, TAIL2):
-            if hz(body) >= TARGET:
+            if hz(body) >= TARGET_LO:
                 break
             if n not in src or src[n] in body:
                 continue
             body = insert_tail(body, src[n])
             changed = True
         if not changed:
-            if hz(body) < TARGET:
+            if hz(body) < TARGET_LO:
                 short.append((n, hz(body)))
             continue
         new = body + ("\n\n" + footer if footer else "")
         open(path, "w", encoding="utf-8", newline="\n").write(new)
         c = body_chars(new)
         print(f"ch{n:03d} -> {c}")
-        if c < TARGET:
+        if c < TARGET_LO:
             short.append((n, c))
     print("still short:", short)
 

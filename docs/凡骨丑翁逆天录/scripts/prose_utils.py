@@ -4,6 +4,11 @@ from __future__ import annotations
 
 import re
 
+# v39b：留存优先 · 单章下限 1500 可接受；2000 为理想非硬闸
+TARGET_LO = 1500
+TARGET_HI = 3000
+TARGET_IDEAL = 2000
+
 FOOTER_TAG = re.compile(r"^\（对照 `05`", re.MULTILINE)
 
 

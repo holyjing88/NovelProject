@@ -65,7 +65,7 @@ def main() -> None:
         open(path, "w", encoding="utf-8", newline="\n").write(new)
         c = body_chars(new)
         print(f"ch{n:03d} {c}")
-        if c < 2000:
+        if c < TARGET_LO:
             short.append((n, c))
     print("short:", short)
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v39 终补：短章循环补段至 ≥2000"""
+"""v39 终补：短章循环补段至 ≥1500（戏内 · 不 PAD）"""
 from __future__ import annotations
 
 import glob
@@ -8,10 +8,9 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import body_chars, extract_body_and_footer, hz
+from prose_utils import TARGET_LO, body_chars, extract_body_and_footer, hz
 
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
-TARGET = 2000
 END_M = "<!-- v38-end -->"
 TOPUP_M = "<!-- v38-topup -->"
 
@@ -125,11 +124,11 @@ def main() -> None:
             continue
         text = open(path, encoding="utf-8").read()
         body, footer = extract_body_and_footer(text)
-        if hz(body) >= TARGET:
+        if hz(body) >= TARGET_LO:
             continue
         blocks = list(EXTRA.get(n, []))
         gi = 0
-        while hz(body) < TARGET and (blocks or gi < len(GENERIC)):
+        while hz(body) < TARGET_LO and (blocks or gi < len(GENERIC)):
             if blocks:
                 body = insert_block(body, blocks.pop(0))
             elif gi < len(GENERIC):
@@ -141,7 +140,7 @@ def main() -> None:
         open(path, "w", encoding="utf-8", newline="\n").write(new)
         c = body_chars(new)
         print(f"ch{n:03d} -> {c}")
-        if c < TARGET:
+        if c < TARGET_LO:
             short.append((n, c))
     print("still short:", short)
 

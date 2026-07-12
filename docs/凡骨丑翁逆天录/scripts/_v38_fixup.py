@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v38 扫尾：去元叙事 · 精简 THICKEN · 补 2000 字闸 · 重刷章末钩"""
+"""v38 扫尾：去元叙事 · 精简 THICKEN · 补 1500 字闸 · 重刷章末钩"""
 from __future__ import annotations
 
 import glob
@@ -8,12 +8,11 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import body_chars, extract_body_and_footer, hz
+from prose_utils import TARGET_LO, body_chars, extract_body_and_footer, hz
 from retention_data import REPLACE_PAIRS, RETENTION_END, THICKEN, THICKEN_OVERRIDE
 from retention_topup import FILL, TOPUP
 
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
-TARGET_LO = 2000
 THICKEN_MARKER = "<!-- v38-thicken -->"
 END_MARKER = "<!-- v38-end -->"
 TOPUP_MARKER = "<!-- v38-topup -->"
@@ -40,7 +39,7 @@ META_INLINE = (
     ("凉了，白写", "凉了，恩就假"),
 )
 
-# 仍不足 2000 字时的通用补尾（戏内 · 不重复章末钩）
+# 仍不足 TARGET_LO 时的通用补尾（戏内 · 不重复章末钩；v39b 下限 1500）
 PAD_TAIL = (
     "他按坛沿，只记，不飘。飘了，恩断；恩不断，手就稳，稳了，明日还有活，活才能还。"
     "还远不怕，怕的是汤凉——汤在叶铺，在刘婆灶，在心里，心里那格留给烫，烫字不写，按在胃上。"

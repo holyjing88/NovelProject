@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v39 扫尾：清除 PAD · 补 2000 字闸（戏内独段）"""
+"""v39 扫尾：清除 PAD · 补 1500 字闸（戏内独段）"""
 from __future__ import annotations
 
 import glob
@@ -8,10 +8,9 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import body_chars, extract_body_and_footer, hz
+from prose_utils import TARGET_LO, body_chars, extract_body_and_footer, hz
 
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
-TARGET = 2000
 
 PAD_BLOCK = re.compile(
     r"\n*他按坛沿，只记，不飘。飘了，恩断；恩不断，手就稳，稳了，明日还有活，活才能还。"
@@ -80,9 +79,9 @@ def main() -> None:
         text = open(path, encoding="utf-8").read()
         body, footer = extract_body_and_footer(text)
         body = scrub(body)
-        if hz(body) < TARGET:
+        if hz(body) < TARGET_LO:
             body = pad_short(body, n)
-        if hz(body) < TARGET and n in PAD_REPLACEMENT:
+        if hz(body) < TARGET_LO and n in PAD_REPLACEMENT:
             # 仍短则正文末再补一句
             extra = "他低声道：「手稳，恩不断；恩不断，汤就不凉。」"
             if extra not in body and "**状态**" in body:
@@ -91,7 +90,7 @@ def main() -> None:
         if new != text:
             open(path, "w", encoding="utf-8", newline="\n").write(new)
         c = body_chars(new)
-        if c < TARGET:
+        if c < TARGET_LO:
             short.append((n, c))
         print(f"ch{n:03d} {c}")
     print("still short:", short)

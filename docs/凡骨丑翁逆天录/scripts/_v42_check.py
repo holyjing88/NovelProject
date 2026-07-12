@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v42/v43 起点标准校验：ch001-063 + ch130 · 1670～2500 字 · dup<2% · 无破壁"""
+"""v42/v48 起点标准校验：ch001-063 + ch130 · 2000～2500 字 · dup<2% · 无破壁"""
 import glob, re, os, sys, json
 
 sys.path.insert(0, os.path.dirname(__file__))

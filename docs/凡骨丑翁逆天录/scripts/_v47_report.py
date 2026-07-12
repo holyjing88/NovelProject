@@ -2,7 +2,7 @@
 """v47 目标章字数+摘要报告"""
 import glob, re, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import extract_body_and_footer, hz
+from prose_utils import TARGET_LO, TARGET_HI, extract_body_and_footer, hz
 
 TARGET = {2} | set(range(4, 31)) - {18, 24}
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
@@ -54,5 +54,5 @@ for p in sorted(glob.glob(os.path.join(PROSE, "ch*.md"))):
     en = len(re.findall(r"韩泥[「\"]?嗯", b))
     st = "**状态**" in b
     v47 = "v47爆款10" in raw
-    flag = "OK" if 1670 <= h <= 2500 and d < 0.02 and en <= 1 and not st and v47 else "WARN"
+    flag = "OK" if TARGET_LO <= h <= TARGET_HI and d < 0.02 and en <= 1 and not st and v47 else "WARN"
     print(f"ch{n:03d} {h} dup={d:.3f} en={en} {flag} | {SUMMARY[n]}")

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import glob, re, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from prose_utils import extract_body_and_footer, hz
-
+from prose_utils import TARGET_LO, TARGET_HI, extract_body_and_footer, hz
 TARGET = {2} | set(range(4, 31)) - {18, 24}
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
 
@@ -30,13 +29,13 @@ for p in sorted(glob.glob(os.path.join(PROSE, "ch*.md"))):
     status_in_body = "**状态**" in b
     v47 = "v47爆款10" in raw
     flag = []
-    if h < 1670:
+    if h < TARGET_LO:
         flag.append("SHORT")
-    elif h < 1780:
+    elif h < TARGET_LO + 80:
         flag.append("LOW")
-    elif h > 1950:
+    elif h > TARGET_HI - 150:
         flag.append("HIGH")
-    if h > 2500:
+    if h > TARGET_HI:
         flag.append("OVER")
     if d >= 0.02:
         flag.append("DUP")

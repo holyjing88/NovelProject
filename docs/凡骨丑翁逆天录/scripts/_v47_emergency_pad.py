@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v47 紧急补字：跌破1670的章 → ≥1780"""
+"""v47 紧急补字：跌破 TARGET_LO 的章 → 补至 ≥TARGET_LO"""
 from __future__ import annotations
 
 import glob
@@ -12,7 +12,7 @@ from prose_utils import TARGET_LO, extract_body_and_footer, hz
 
 PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
 END = "\n\n---\n\n章末"
-GOAL = 1780
+GOAL = TARGET_LO
 
 PAD: dict[int, str] = {
     5: (

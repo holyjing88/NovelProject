@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v45b 仅追加补字至≥1670 · 不删减正文"""
+"""v45b 仅追加补字至≥TARGET_LO · 不删减正文"""
 from __future__ import annotations
 
 import glob

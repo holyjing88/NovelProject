@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import re
 
-# v43：起点标准 · 单章 **1670～2500 字** 硬闸
-TARGET_LO = 1670
+# v48：起点标准 · 单章 **2000～2500 字** 硬闸
+TARGET_LO = 2000
 TARGET_HI = 2500
-TARGET_IDEAL = 2000  # 区间中位参考，非硬闸
+TARGET_IDEAL = 2250  # 区间中位参考，非硬闸
 
 FOOTER_TAG = re.compile(r"^\（对照 `05`", re.MULTILINE)
 

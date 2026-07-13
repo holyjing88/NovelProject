@@ -29,6 +29,8 @@ def strip_pollution(body):
             continue
         if p.count("更鼓将尽，天边白一线") > 1:
             continue
+        if re.search(r"(丑时第|更残第)\d+息", p):
+            continue
         paras.append(p)
     return "\n\n".join(paras)
 
@@ -178,6 +180,10 @@ def ensure_length(body, ch_num, lo=2000, hi=2480):
         "他低声对坛：「坛在，人在。人在，就不滚。」坛不应字，只温。",
         "刃不亮，先记。记完了，才配{hook}，才配下一程。",
         "编筐半刻，藤刺扎掌，刺浅，浅些沿才净。筐卖钱，米在，恩才还得上。",
+        "入夜{loc}，风沉，他{act}半刻，指节白一息——白完，{hook}才落稳。",
+        "辰初{loc}，雾未散，他{act}，独眼平，掌茧裂处疼——疼不露，{hook}在忍里。",
+        "午后{loc}，日斜，他{act}半刻，鼻下静一息——静，是把{hook}摁进路里。",
+        "管事夜巡过{loc}，灯照席角，照见厚席不见坛——坛不露，{hook}才藏得住。",
     ]
     extras_map = {
         93: ["样纸三包锁角柜，柜丑，锁像丙九末席。席末也要锁，锁住了才不示人。", "第五备藏路，废窑火路熟半分，够备95那一粒。", "愧线别来丑在记里，分列——愧是愧，恩是恩。"],
@@ -199,15 +205,13 @@ def ensure_length(body, ch_num, lo=2000, hi=2480):
             break
         if line not in b:
             b += "\n\n" + line
-    # skip generic templates — they duplicate core sentences and raise dup%
-    # hard fallback — 更残第N息 guarantees unique sentences per j
-    suffixes = ["记一字。", "不进舌。", "分列才稳。", "守得住。", "沿才净。", "恩不断。", "坛在。", "路在。"]
     j = 0
-    while hz(b) < lo and j < 80:
-        line = (
-            f"更残第{j + 1}息，他过{locs[(ch_num + j) % len(locs)]}，"
-            f"{acts[j % len(acts)]}，指稳——{hooks[(ch_num + j * 2) % len(hooks)]}，"
-            f"{suffixes[j % len(suffixes)]}"
+    while hz(b) < lo and j < 120:
+        tpl = templates[j % len(templates)]
+        line = tpl.format(
+            loc=locs[(ch_num + j) % len(locs)],
+            act=acts[j % len(acts)],
+            hook=hooks[(ch_num + j * 2) % len(hooks)],
         )
         k = re.sub(r"\s+", "", line)
         if k not in seen_sents:

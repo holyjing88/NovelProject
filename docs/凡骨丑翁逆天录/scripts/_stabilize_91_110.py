@@ -12,7 +12,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from prose_utils import TARGET_LO, extract_body_and_footer, hz
-from _fix_prose_final import UNIQUE, expand_body
+from _fix_prose_final import UNIQUE
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 PROSE = os.path.join(ROOT, "prose")
@@ -63,7 +63,8 @@ for n in (91,):
     for u in UNIQUE.get(n, []):
         if u.strip() not in core:
             core += "\n\n" + u.strip()
-    body = expand_body(rw.dedupe_paragraphs(rw.dedupe_sentences_light(core)), n)
+    core = rw.dedupe_paragraphs(rw.dedupe_sentences_light(rw.strip_pollution(core)))
+    body = rw.ensure_length(core, n)
     path = sorted(glob.glob(os.path.join(PROSE, f"ch{n:03d}-*.md")))[0]
     h, d = write_ch(n, f"第九十一章 废窑试炉", body, path)
     print(f"ch{n:03d}", h, d)

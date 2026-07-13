@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""v42/v48 起点标准校验：ch001-068 + ch130 · 2000～2500 字 · dup<2% · 无破壁"""
+"""v42/v48 起点标准校验：ch001-129 + ch130 · 2000～2500 字 · dup<2% · 无破壁"""
 import glob, re, os, sys, json
 
 sys.path.insert(0, os.path.dirname(__file__))
 from prose_utils import TARGET_LO, TARGET_HI, extract_body_and_footer, hz
 
-V42_CHAPTERS = {n for n in range(1, 69)} | {130}
+V42_CHAPTERS = {n for n in range(1, 130)} | {130}
 
 
 def dup(t):

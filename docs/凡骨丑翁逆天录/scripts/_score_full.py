@@ -15,7 +15,8 @@ HOOK_KEY = (
 EMPATHY_KW = ("叶青禾", "叶丫头", "刘婆", "芽儿", "趁热", "先还", "恩在", "记恩")
 PAYOFF_SET = {
     3, 6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 30, 32, 34, 35, 36,
-    39, 40, 41, 42, 43, 44, 45, 49, 50, 51, 55, 57, 60, 63, 130,
+    39, 40, 41, 42, 43, 44, 45, 49, 50, 51, 55, 57, 60, 63,
+    68, 70, 80, 90, 95, 100, 106, 108, 110, 111, 118, 120, 125, 128, 129, 130,
 }
 
 
@@ -203,6 +204,11 @@ arcs = {
     "31-45": range(31, 46),
     "46-62": range(46, 63),
     "63": [63],
+    "64-68": range(64, 69),
+    "69-80": range(69, 81),
+    "81-95": range(81, 96),
+    "96-110": range(96, 111),
+    "111-129": range(111, 130),
     "130": [130],
 }
 print()
@@ -212,7 +218,7 @@ for name, chs in arcs.items():
     ss = [by_n[c][3] for c in chs if c in by_n]
     print(f"{name}: {sum(ss)/len(ss):.2f} (n={len(ss)})")
 all_sc = [r[3] for r in rows]
-print(f"ALL64: {sum(all_sc)/len(all_sc):.2f}")
+print(f"ALL130: {sum(all_sc)/len(all_sc):.2f}")
 
 # ten-dim overall (v49 data-driven)
 dup_bad = sum(1 for r in rows if r[2] >= 0.02)

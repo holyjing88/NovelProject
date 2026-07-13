@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-"""ch001-063 + ch130 弃书风险量化（起点留存）"""
+"""ch001-129 + ch130 弃书风险量化（起点留存）"""
 import glob, re, json, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from prose_utils import TARGET_LO, TARGET_IDEAL, extract_body_and_footer, hz
 
-V42_CHAPTERS = {n for n in range(1, 64)} | {130}
+V42_CHAPTERS = {n for n in range(1, 130)} | {130}
 
 PAYOFF = {
     3, 6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 30, 32, 34, 35, 36,
-    39, 40, 41, 42, 43, 44, 45, 49, 50, 51, 55, 57, 60, 63, 130,
+    39, 40, 41, 42, 43, 44, 45, 49, 50, 51, 55, 57, 60, 63,
+    68, 70, 80, 90, 95, 100, 106, 108, 110, 111, 118, 120, 125, 128, 129, 130,
 }
 HOOK_KEY = (
     "明日", "锤", "帖", "条", "日", "规矩", "公审", "必还", "四日", "五日", "七日",
@@ -71,16 +72,25 @@ for p in sorted(glob.glob(os.path.join(os.path.dirname(__file__), "..", "prose",
     })
 
 for c in chapters:
+    n = c["n"]
     base = 2.0
     base += c["dup"] * 12
     base += c["th_dup"] * 8
     base += max(0, c["th_pct"] - 25) * 0.08
-    base += max(0, c["dist_pay"] - 3) * 0.9
+    if n >= 64:
+        # 一部续写 arc：里程碑稀疏，dist 惩罚放宽
+        base += max(0, c["dist_pay"] - 12) * 0.22
+        base -= min(c["hook_score"], 4) * 0.85
+        base -= 0.35 if c["hook_len"] >= 35 and c["hook_score"] >= 1 else 0
+    else:
+        base += max(0, c["dist_pay"] - 3) * 0.9
+        base -= min(c["hook_score"], 4) * 0.6
+        base -= 0.3 if c["hook_len"] >= 45 and c["hook_score"] >= 2 else 0
     base -= 2.5 if c["payoff"] else 0
-    base -= min(c["hook_score"], 4) * 0.6
     base -= 0.4 if c["hz"] >= TARGET_LO else 0
     base -= 0.5 if c["hz"] >= TARGET_IDEAL else 0
-    base -= 0.3 if c["hook_len"] >= 45 and c["hook_score"] >= 2 else 0
+    if n >= 64 and c["hz"] >= TARGET_LO and c["dup"] < 0.02:
+        base -= 1.1
     daily = min(10, max(1, round(base, 1)))
     batch = min(10, max(1, round(base + c["dup"] * 4 + (0.6 if c["th_pct"] > 20 else 0), 1)))
     c["daily_risk"] = daily
@@ -102,6 +112,11 @@ SEGMENTS = [
     (50, 55, "正测·商队·凡符"),
     (56, 62, "坛温加剧·钩63"),
     (63, 63, "瓮醒样板"),
+    (64, 68, "瓮醒余波·冬测续"),
+    (69, 80, "踹台·炼气初境"),
+    (81, 95, "暗修·匿丹"),
+    (96, 110, "兽潮·首炼"),
+    (111, 129, "炼气后期·复测备战"),
     (130, 130, "还刘婆样板"),
 ]
 

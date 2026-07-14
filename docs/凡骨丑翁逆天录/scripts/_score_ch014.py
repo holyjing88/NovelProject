@@ -19,7 +19,7 @@ cut = src.split("\nrows = []")[0]
 ns = {}
 exec(compile(cut, "_score_full.py", "exec"), ns)
 
-raw = open("../prose/ch014-村议.md", encoding="utf-8").read()
+raw = open("../prose/ch014-村议辱叶.md", encoding="utf-8").read()
 body, footer = extract_body_and_footer(raw)
 h = hz(body)
 dr, dups = ns["dup_rate"](body)

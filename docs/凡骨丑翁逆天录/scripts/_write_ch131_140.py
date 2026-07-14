@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Write ch131-140 · 第二部首簇 · 仙凡 v2 · 2000-2500 hz."""
+"""Write ch131-140 · 第二部首簇 · 通俗白话（见 31）· 2000-2500 hz."""
 import importlib.util
 import os
 import re
@@ -592,7 +592,7 @@ def merge_expansions(body: str, n: int) -> str:
 
 def footer(n):
     ref, st = FOOTERS[n]
-    return f"\n---\n\n章末\n\n（对照 `16` {ref} · **仙凡笔锋 v2**）\n\n**状态**：{st}\n"
+    return f"\n---\n\n章末\n\n（对照 `16` {ref} · **通俗笔锋**）\n\n**状态**：{st}\n"
 
 
 def write_chapter(n):

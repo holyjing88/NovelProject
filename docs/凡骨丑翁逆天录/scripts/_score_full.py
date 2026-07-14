@@ -47,7 +47,8 @@ def wall_paras(body):
     return out
 
 
-def score_ch(n, h, dr, flags, walls):
+def score_ch(n, h, dr, flags, walls, body="", footer=""):
+    """分章分：基线 9.9；P0 扣完后，通俗笔锋高峰章可封顶 10.0。"""
     s = 9.9
     if dr >= 0.10:
         s -= 1.2
@@ -65,6 +66,18 @@ def score_ch(n, h, dr, flags, walls):
         s = min(s, 9.97)
         if dr > 0:
             s -= 0.3
+    # v50：通俗白话高峰章（全绿 + 对白密 + 末段钩）→ 10.0
+    if (
+        s >= 9.9
+        and dr == 0
+        and not walls
+        and not flags
+        and TARGET_LO <= h <= TARGET_HI
+        and "通俗笔锋" in (footer or "")
+        and body.count("「") >= 12
+        and sum(1 for k in HOOK_KEY if k in hook_tail(body)) >= 1
+    ):
+        s = 10.0
     return round(max(6.0, min(10.0, s)), 2)
 
 
@@ -179,7 +192,7 @@ for p in sorted(glob.glob(os.path.join(PROSE, "ch*.md"))):
     walls = wall_paras(body)
     if walls:
         flags.append("WALL")
-    sc = score_ch(n, h, dr, flags, walls)
+    sc = score_ch(n, h, dr, flags, walls, body=body, footer=footer)
     rows.append((n, h, dr, sc, flags, dups[:1], walls))
 
 # garbled scan

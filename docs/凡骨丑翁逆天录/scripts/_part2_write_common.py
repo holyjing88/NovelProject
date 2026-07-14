@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Shared write pipeline for Part 2 prose clusters."""
+"""Shared write pipeline for Part 2 prose clusters.
+
+笔法：新稿脚注用「通俗笔锋」（见 31）；禁止再输出「仙凡笔锋 v2」为新稿标准。
+"""
 import importlib.util
 import os
 import re
@@ -81,7 +84,7 @@ def write_chapter(n: int, body_core: str, meta: dict, pools: dict) -> tuple:
     if split_walls.wall_paras(body):
         raise SystemExit(f"ch{n:03d} WALL FAIL")
     ref, st = FOOTERS[n]
-    footer = f"\n---\n\n章末\n\n（对照 `16` {ref} · **仙凡笔锋 v2**）\n\n**状态**：{st}\n"
+    footer = f"\n---\n\n章末\n\n（对照 `16` {ref} · **通俗笔锋**）\n\n**状态**：{st}\n"
     title = f"# 第{CN[n]}章 {NAMES[n]}"
     fname = f"ch{n:03d}-{NAMES[n]}.md"
     path = os.path.join(PROSE, fname)

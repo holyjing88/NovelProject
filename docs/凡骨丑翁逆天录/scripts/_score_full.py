@@ -16,7 +16,7 @@ EMPATHY_KW = ("叶青禾", "叶丫头", "刘婆", "芽儿", "趁热", "先还", 
 PAYOFF_SET = {
     3, 6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 30, 32, 34, 35, 36,
     39, 40, 41, 42, 43, 44, 45, 49, 50, 51, 55, 57, 60, 63,
-    68, 70, 80, 90, 95, 100, 106, 108, 110, 111, 118, 120, 125, 128, 129, 130,
+    68, 70, 80, 90, 95, 100, 106, 108, 110, 111, 118, 120, 125, 128, 129, 130, 140, 142, 145,
 }
 
 
@@ -210,6 +210,8 @@ arcs = {
     "96-110": range(96, 111),
     "111-129": range(111, 130),
     "130": [130],
+    "131-140": range(131, 141),
+    "141-150": range(141, 151),
 }
 print()
 print("=== ARC AVG ===")
@@ -218,7 +220,7 @@ for name, chs in arcs.items():
     ss = [by_n[c][3] for c in chs if c in by_n]
     print(f"{name}: {sum(ss)/len(ss):.2f} (n={len(ss)})")
 all_sc = [r[3] for r in rows]
-print(f"ALL130: {sum(all_sc)/len(all_sc):.2f}")
+print(f"ALL{len(all_sc)}: {sum(all_sc)/len(all_sc):.2f}")
 
 # ten-dim overall (v49 data-driven)
 dup_bad = sum(1 for r in rows if r[2] >= 0.02)

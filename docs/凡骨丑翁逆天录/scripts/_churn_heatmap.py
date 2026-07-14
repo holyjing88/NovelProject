@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-"""ch001-129 + ch130 弃书风险量化（起点留存）"""
+"""prose/ch*.md 弃书风险量化（起点留存）"""
 import glob, re, json, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 from prose_utils import TARGET_LO, TARGET_IDEAL, extract_body_and_footer, hz
 
-V42_CHAPTERS = {n for n in range(1, 130)} | {130}
+PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
+V42_CHAPTERS = {
+    int(re.search(r"ch(\d+)", p).group(1))
+    for p in glob.glob(os.path.join(PROSE, "ch*.md"))
+}
 
 PAYOFF = {
     3, 6, 10, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 30, 32, 34, 35, 36,
     39, 40, 41, 42, 43, 44, 45, 49, 50, 51, 55, 57, 60, 63,
-    68, 70, 80, 90, 95, 100, 106, 108, 110, 111, 118, 120, 125, 128, 129, 130,
+    68, 70, 80, 90, 95, 100, 106, 108, 110, 111, 118, 120, 125, 128, 129, 130, 140, 142, 145,
 }
 HOOK_KEY = (
     "明日", "锤", "帖", "条", "日", "规矩", "公审", "必还", "四日", "五日", "七日",
@@ -36,7 +40,7 @@ def shorten(s, n=36):
     return s[:n]
 
 chapters = []
-for p in sorted(glob.glob(os.path.join(os.path.dirname(__file__), "..", "prose", "ch*.md"))):
+for p in sorted(glob.glob(os.path.join(PROSE, "ch*.md"))):
     n = int(re.search(r"ch(\d+)", p).group(1))
     if n not in V42_CHAPTERS:
         continue
@@ -54,7 +58,7 @@ for p in sorted(glob.glob(os.path.join(os.path.dirname(__file__), "..", "prose",
         # 无 v38-end 标记时取章末前两段
         paras = [x.strip() for x in re.split(r"\n\n+", body) if x.strip() and not x.startswith("<!--")]
         hk = paras[-1] if paras else ""
-    nxt = min([p for p in PAYOFF if p > n], default=131)
+    nxt = min([p for p in PAYOFF if p > n], default=165)
     dist = 0 if n in PAYOFF else nxt - n
     hook_score = sum(1 for k in HOOK_KEY if k in hk)
     chapters.append({
@@ -118,6 +122,8 @@ SEGMENTS = [
     (96, 110, "兽潮·首炼"),
     (111, 129, "炼气后期·复测备战"),
     (130, 130, "还刘婆样板"),
+    (131, 140, "外门积势·帖至"),
+    (141, 150, "培元恩偿·簇收钩165"),
 ]
 
 segs = []

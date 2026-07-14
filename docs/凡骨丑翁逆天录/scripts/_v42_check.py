@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
-"""v42/v48 起点标准校验：ch001-129 + ch130 · 2000～2500 字 · dup<2% · 无破壁"""
+"""v42/v48 起点标准校验：prose/ch*.md 全书 · 2000～2500 字 · dup<2% · 无破壁"""
 import glob, re, os, sys, json
 
 sys.path.insert(0, os.path.dirname(__file__))
 from prose_utils import TARGET_LO, TARGET_HI, extract_body_and_footer, hz
 
-V42_CHAPTERS = {n for n in range(1, 130)} | {130}
+PROSE = os.path.join(os.path.dirname(__file__), "..", "prose")
+V42_CHAPTERS = {
+    int(re.search(r"ch(\d+)", p).group(1))
+    for p in glob.glob(os.path.join(PROSE, "ch*.md"))
+}
 
 
 def dup(t):
@@ -27,7 +31,7 @@ def meta_ch(body):
 
 short, over, high, meta, missing_status = [], [], [], [], []
 
-for p in sorted(glob.glob(os.path.join("..", "prose", "ch*.md"))):
+for p in sorted(glob.glob(os.path.join(PROSE, "ch*.md"))):
     n = int(re.search(r"ch(\d+)", p).group(1))
     if n not in V42_CHAPTERS:
         continue
